@@ -16,7 +16,6 @@ export function Coin() {
   const [inputTo, setInputTo] = useState(1);
   const [swapped, setSwapped] = useState(false);
 
-
   useEffect(() => {
     init();
   }, [])
@@ -78,7 +77,7 @@ export function Coin() {
         </Space>
 
       }>
-        <Space>
+        <div className="inputs-wrapper">
           <InputNumber
             size="large"
             value={inputFrom}
@@ -105,7 +104,7 @@ export function Coin() {
               </Select>
             }
           />
-        </Space>
+        </div>
       </Card>
     </Wrapper>
   );

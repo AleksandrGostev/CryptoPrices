@@ -1,4 +1,4 @@
-import { Header as AntdHeader } from "antd/es/layout/layout";
+import { Header as AntdHeader } from "antd/lib/layout/layout";
 import Wrapper from './styles';
 
 export function Header() {

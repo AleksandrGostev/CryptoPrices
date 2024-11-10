@@ -1,5 +1,5 @@
 import { Space, Table, Typography } from "antd";
-import { ColumnsType } from "antd/es/table";
+import { ColumnsType } from "antd/lib/table";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../utils/axios";
@@ -72,6 +72,7 @@ export function CurrencyList() {
       <Table
         dataSource={currencies}
         columns={columns}
+        scroll={{ x: 1024 }}
         rowKey="id"
         onRow={(record: Coin) => {
           return {

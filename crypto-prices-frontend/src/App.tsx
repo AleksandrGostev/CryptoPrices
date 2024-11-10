@@ -1,4 +1,4 @@
-import Layout, { Content } from 'antd/es/layout/layout';
+import Layout, { Content } from 'antd/lib/layout/layout';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Header } from './components/header/Header';
 import { HomePage } from './pages/home/HomePage';
