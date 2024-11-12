@@ -34,7 +34,7 @@ This project is a web application designed to allow users to view and compare cr
 4. **Run Docker Compose**:  
    Start the application using Docker Compose to set up both frontend and backend containers:
    ```bash
-   docker-compose up --build
+   docker-compose up --build [ --force-recreate ]
 
 ### Access the Application
 - Once the backend, frontend and postgres are running, you can access the site at: http://localhost:3000
@@ -48,4 +48,5 @@ This project is a web application designed to allow users to view and compare cr
 * Admin panel to add / remove coins supported by the system
 * Overall UI/UX could be improved
 * Frontend tests
-* serve frontend over nginx with production build
+* Serve frontend over nginx with production build
+* Replace in-memory cache with redis
