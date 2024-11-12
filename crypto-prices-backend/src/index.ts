@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
-import { mainRouter } from "./routes";
-import { getWebApp } from "./utils/server";
+import { mainRouter } from './routes';
+import { getWebApp } from './utils/server';
 import { runMigrations } from './knex';
 
 dotenv.config();
@@ -19,4 +19,3 @@ export const start = async () => {
 void (async () => {
   await start();
 })();
-

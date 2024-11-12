@@ -1,4 +1,4 @@
-import PromiseRouter from "express-promise-router";
+import PromiseRouter from 'express-promise-router';
 
 export const pingRouter = PromiseRouter();
 

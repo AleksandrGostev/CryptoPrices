@@ -1,4 +1,4 @@
-import NodeCache from "node-cache";
+import NodeCache from 'node-cache';
 
 const timeToLiveInSeconds = 60;
 const cache = new NodeCache({ stdTTL: timeToLiveInSeconds });
@@ -16,6 +16,6 @@ export const cacheMiddleware = (req: any, res: any, next: any) => {
     cache.set(key, body);
     return originalJson(body);
   };
-  
+
   next();
-}
+};
