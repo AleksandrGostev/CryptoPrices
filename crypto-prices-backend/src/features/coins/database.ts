@@ -40,10 +40,23 @@ export const upsertCoinMarketData = async (data: any) => {
 export const getCoinDataById = async (coinId: string) => {
   return db('coin as c')
     .innerJoin('coin_external_provider as cep', 'c.id', 'cep.coin_id')
-    .select(['c.symbol', 'c.name', 'c.icon', 'cep.external_id'])
+    .innerJoin('coin_market_data as cmd', 'c.id', 'cmd.coin_id')
+    .select([
+      'c.symbol',
+      'c.name',
+      'c.icon',
+      'cep.external_id',
+      'cmd.current_price',
+      'cmd.market_cap',
+      'cmd.price_change_24h',
+      'cmd.market_cap_rank',
+    ])
     .where('c.id', coinId);
 }
 
 export const getCompareToExternalIds = async (coinId: string) => {
   return db('coin_external_provider').whereNotNull('coin_id').andWhereNot('coin_id', coinId).pluck('external_id');
 }
+
+export const getCoinExternalIdByCoinId = async (coinId: string) => db('coin_external_provider').select('external_id').where('coin_id', coinId);
+

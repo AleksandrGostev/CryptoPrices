@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { device } from "../../utils";
 
 export default styled.div`
-  padding: 50px;
   .ant-card-head-title {
     padding: 20px;
     
@@ -15,10 +14,6 @@ export default styled.div`
     }
   }
 
-  .swap {
-    cursor: pointer;
-  }
-  
   .inputs-wrapper {
     display: flex;
     flex-direction: column;
@@ -29,5 +24,13 @@ export default styled.div`
       flex-direction: row;
       gap: 40px;
     }
+  }
+  
+  .conversion-table {
+    margin-top: 30px;
+  }
+
+  .currency-icon {
+    border-radius: 50%;
   }
 `;

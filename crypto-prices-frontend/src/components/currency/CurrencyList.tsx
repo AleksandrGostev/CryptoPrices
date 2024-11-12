@@ -3,6 +3,7 @@ import { ColumnsType } from "antd/lib/table";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../utils/axios";
+import { nFormatter } from "../../utils/helpers";
 import Wrapper from './styles';
 
 type Coin = {
@@ -51,15 +52,17 @@ export function CurrencyList() {
     {
       title: 'Price',
       dataIndex: 'current_price',
-      render: (price: number) => `${price} $`,
+      render: (price: number) => `$ ${price}`,
     },
     {
       title: 'Market cap',
       dataIndex: 'market_cap',
+      render: (marketCap: number) => `$ ${nFormatter(marketCap, 2)}`
     },
     {
       title: 'Price change 24h',
       dataIndex: 'price_change_24h',
+      render: (price: number) => `$ ${price}`,
     },
     {
       title: 'Market cap rank',

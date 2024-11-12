@@ -4,7 +4,7 @@ import { Header } from './components/header/Header';
 import { HomePage } from './pages/home/HomePage';
 import { ConfigProvider } from 'antd';
 import Wrapper from './app.styles';
-import { Coin } from './pages/coin/Coin';
+import { CoinPage } from './pages/coin/CoinPage';
 
 function App() {
 
@@ -15,7 +15,7 @@ function App() {
     },
     {
       path: '/prices/:coinId',
-      element: <Coin />
+      element: <CoinPage />
     }
   ]);
 

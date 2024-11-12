@@ -8,7 +8,9 @@ const { default: axios } = require("axios");
 
 const coingeckoMapping = {
   tether: 'usdt',
-  'the-open-network': 'ton'
+  'the-open-network': 'ton',
+  'bitcoin': 'btc',
+  'ethereum': 'eth'
 };
 
 exports.up = async function(knex) {
@@ -32,6 +34,16 @@ exports.up = async function(knex) {
       symbol: 'usdt',
       name: 'Tether',
       icon: 'usdt'
+    },
+    {
+      symbol: 'btc',
+      name: 'Bitcoin',
+      icon: 'btc'
+    },
+    {
+      symbol: 'eth',
+      name: 'Ethereum',
+      icon: 'eth'
     }
   ]).returning('*');
 
@@ -66,7 +78,7 @@ exports.up = async function(knex) {
           name: coin.name,
           provider: 'coingecko'
         };
-        if(['tether', 'the-open-network'].includes(coin.id)) {
+        if(Object.keys(coingeckoMapping).includes(coin.id)) {
           const dbCoinSymbol = coingeckoMapping[coin.id];
           const coinId = dbCoins.find(c => c.symbol === dbCoinSymbol);
           if(coinId) {

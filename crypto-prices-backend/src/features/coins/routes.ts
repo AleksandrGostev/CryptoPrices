@@ -1,9 +1,10 @@
 import PromiseRouter from "express-promise-router";
-import { getAllCoinsBasicData, getCoinDataById, getCoinsWithOutdatedData, getCompareToExternalIds, upsertCoinMarketData } from "./database";
+import { getAllCoinsBasicData, getCoinDataById, getCoinExternalIdByCoinId, getCoinsWithOutdatedData, getCompareToExternalIds, upsertCoinMarketData } from "./database";
 import { fetchCoinGeckoActualPrice } from "./helpers";
 import { cacheMiddleware } from "../../utils/cache";
 import { result, wrap } from "lodash";
 import axios from "axios";
+import { Ticker } from "./types";
 
 
 export const coinsRouter = PromiseRouter();
@@ -30,12 +31,12 @@ coinsRouter.get('/:coinId', cacheMiddleware, async (req, res) => {
   return res.json(coinData);
 });
 
-coinsRouter.get('/:coinId/compare-list', cacheMiddleware, async (req, res) => {
+coinsRouter.get('/:coinId/tickers', cacheMiddleware, async (req, res) => {
   const {coinId} = req.params;
-  const [coinData] = await getCoinDataById(coinId);
+  const [coinData] = await getCoinExternalIdByCoinId(coinId);
 
   // get exchange tickers from coin gecko
-  const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${coinData.external_id}/tickers`, {
+  const tickersResponse = await axios.get(`https://api.coingecko.com/api/v3/coins/${coinData.external_id}/tickers`, {
     params: {
       'exchange_ids': 'binance',
     },
@@ -44,23 +45,23 @@ coinsRouter.get('/:coinId/compare-list', cacheMiddleware, async (req, res) => {
     }
   });
 
-  let data = response.data.tickers; 
+  if(!tickersResponse) {
+    throw new Error('Could not fetch information');
+  }
 
-  // coingecko supports tether only as target
-  if (coinData.external_id === 'tether') {
-    data = response.data.tickers.map((ticker: any) => {
-      return {
-        ...ticker,
-        base: ticker.target,
-        target: ticker.base,
-        last: 1 / ticker.last,
-      }
-    })
-  }
-  
-  const result = {
-    symbol: coinData.symbol,
-    tradeData: data,
-  }
-  return res.json(result);
+  let data = tickersResponse.data.tickers;
+
+  const chartDataResponse = await axios.get(`https://api.coingecko.com/api/v3/coins/${coinData.external_id}/market_chart`, {
+    params: {
+      'vs_currency': 'usd',
+      days: 30
+    },
+    headers: {
+      'x-cg-demo-api-key': process.env.COIN_GECKO_API_KEY
+    }
+  });
+
+  const prices = chartDataResponse.data.prices.map(([time, price]) => ({ time: new Date(time).toUTCString(), price}));
+
+  return res.json({tickers: data, prices});
 });

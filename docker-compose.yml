@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres_crypto
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: crypto-prices
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data_crypto
+    networks:
+      - backend
+
+  frontend:
+    build:
+      context: ./crypto-prices-frontend
+      dockerfile: Dockerfile
+    container_name: crypto-prices-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    networks:
+      - frontend
+      - backend
+    command: ["npm", "start"]
+
+  backend:
+    build:
+      context: ./crypto-prices-backend
+      dockerfile: Dockerfile
+    container_name: crypto-prices-backend
+    environment:
+      - PG_HOST=postgres
+      - COIN_GECKO_API_KEY=:API_KEY:
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    networks:
+      - backend
+    command: ["npm", "run", "dev"]
+
+volumes:
+  postgres_data:
+
+networks:
+  frontend:
+  backend:
